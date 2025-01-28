@@ -1,9 +1,9 @@
 const bebidas = [
-    { id: 1, name: "Cerveza", price: 3.5, category: "Cerveza", description: "Refrescante y suave.", image: "img/beer.jpg" },
-    { id: 2, name: "Vino", price: 10, category: "Vino", description: "Cuerpo y aroma intenso.", image: "img/wine.jpg" },
-    { id: 3, name: "Martini", price: 7, category: "Aperitivo", description: "Sabor equilibrado.", image: "img/aperitif.jpg" },
-    { id: 4, name: "Cola Cola", price: 2, category: "Gaseosa", description: "Dulce y burbujeante.", image: "img/soda.jpg" },
-    { id: 5, name: "Speed", price: 5, category: "Energizantes", description: "Te llena de energía.", image: "img/energy.jpg" },
+    { id: 1, name: "Cerveza", price: 3000, category: "Cerveza", description: "Refrescante y suave.", image: "img/beer.jpg" },
+    { id: 2, name: "Vino", price: 10000, category: "Vino", description: "Cuerpo y aroma intenso.", image: "img/wine.jpg" },
+    { id: 3, name: "Martini", price: 7000, category: "Aperitivo", description: "Sabor equilibrado.", image: "img/aperitif.jpg" },
+    { id: 4, name: "Cola Cola", price: 2500, category: "Gaseosa", description: "Dulce y burbujeante.", image: "img/soda.jpg" },
+    { id: 5, name: "Speed", price: 5000, category: "Energizantes", description: "Te llena de energía.", image: "img/energy.jpg" },
 ];
 
 const bebidasContainer = document.getElementById("beverages-container");
@@ -33,7 +33,7 @@ bebidasContainer.addEventListener("click", (event) => {
     if (event.target.classList.contains("add-to-cart")) {
         const bebidaId = parseInt(event.target.dataset.id, 10);
         const seleccionarBebida = bebidas.find((b) => b.id === bebidaId);
-        carrito.push(seleccionarBebida); 
+        carrito.push(seleccionarBebida);
         updateCart();
         showSuccessMessage(`${seleccionarBebida.name} añadido al carrito!`);
     }
