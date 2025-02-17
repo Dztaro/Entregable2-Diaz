@@ -6,7 +6,7 @@ let carrito = [];
 
 async function cargarBebidas() {
     try {
-        const response = await fetch("data.json"); 
+        const response = await fetch("data.json");
         bebidas = await response.json();
         mostrarBebidas(bebidas);
         agregarEventListeners();
@@ -87,15 +87,17 @@ function updateCart() {
 }
 
 function showSuccessMessage(message) {
-    const successMessage = document.createElement("div");
-    successMessage.textContent = message;
-    successMessage.classList.add("success-message");
-    document.body.appendChild(successMessage);
-
-    setTimeout(() => {
-        successMessage.remove();
-    }, 2000);
+    Toastify({
+        text: message,
+        duration: 3000,
+        close: true,
+        gravity: "top",
+        position: "right",
+        backgroundColor: "green",
+        stopOnFocus: true,
+    }).showToast();
 }
+
 
 function loadCartFromLocalStorage() {
     const guardarCarrito = localStorage.getItem("cart");
