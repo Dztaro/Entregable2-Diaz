@@ -1,0 +1,7 @@
+[
+    { "id": 1, "name": "Cerveza", "price": 3000, "category": "Cerveza", "description": "Refrescante y suave.", "image": "img/beer.jpg" },
+    { "id": 2, "name": "Vino", "price": 10000, "category": "Vino", "description": "Cuerpo y aroma intenso.", "image": "img/wine.jpg" },
+    { "id": 3, "name": "Martini", "price": 7000, "category": "Aperitivo", "description": "Sabor equilibrado.", "image": "img/aperitif.jpg" },
+    { "id": 4, "name": "Cola Cola", "price": 2500, "category": "Gaseosa", "description": "Dulce y burbujeante.", "image": "img/soda.jpg" },
+    { "id": 5, "name": "Speed", "price": 5000, "category": "Energizantes", "description": "Te llena de energía.", "image": "img/energy.jpg" }
+]

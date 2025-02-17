@@ -1,12 +1,19 @@
-const bebidas = [
-    { id: 1, name: "Cerveza", price: 3000, category: "Cerveza", description: "Refrescante y suave.", image: "img/beer.jpg" },
-    { id: 2, name: "Vino", price: 10000, category: "Vino", description: "Cuerpo y aroma intenso.", image: "img/wine.jpg" },
-    { id: 3, name: "Martini", price: 7000, category: "Aperitivo", description: "Sabor equilibrado.", image: "img/aperitif.jpg" },
-    { id: 4, name: "Cola Cola", price: 2500, category: "Gaseosa", description: "Dulce y burbujeante.", image: "img/soda.jpg" },
-    { id: 5, name: "Speed", price: 5000, category: "Energizantes", description: "Te llena de energía.", image: "img/energy.jpg" },
-];
-
+let bebidas = [];
 const bebidasContainer = document.getElementById("beverages-container");
+const carritoItemsContainer = document.getElementById("cart-items");
+const carritoTotalElement = document.getElementById("cart-total");
+let carrito = [];
+
+async function cargarBebidas() {
+    try {
+        const response = await fetch("data.json"); 
+        bebidas = await response.json();
+        mostrarBebidas(bebidas);
+        agregarEventListeners();
+    } catch (error) {
+        console.error("Error al cargar el JSON:", error);
+    }
+}
 
 function mostrarBebidas(bebidasMenu) {
     bebidasContainer.innerHTML = "";
@@ -22,63 +29,46 @@ function mostrarBebidas(bebidasMenu) {
     });
 }
 
-mostrarBebidas(bebidas);
+function agregarEventListeners() {
+    document.getElementById("filter-beer").addEventListener("click", () => {
+        mostrarBebidas(bebidas.filter((b) => b.category === "Cerveza"));
+    });
 
-const carritoItemsContainer = document.getElementById("cart-items");
-const carritoTotalElement = document.getElementById("cart-total");
+    document.getElementById("filter-wine").addEventListener("click", () => {
+        mostrarBebidas(bebidas.filter((b) => b.category === "Vino"));
+    });
 
-let carrito = [];
+    document.getElementById("filter-aperitif").addEventListener("click", () => {
+        mostrarBebidas(bebidas.filter((b) => b.category === "Aperitivo"));
+    });
 
-bebidasContainer.addEventListener("click", (event) => {
-    if (event.target.classList.contains("add-to-cart")) {
-        const bebidaId = parseInt(event.target.dataset.id, 10);
-        const seleccionarBebida = bebidas.find((b) => b.id === bebidaId);
-        carrito.push(seleccionarBebida);
+    document.getElementById("filter-soda").addEventListener("click", () => {
+        mostrarBebidas(bebidas.filter((b) => b.category === "Gaseosa"));
+    });
+
+    document.getElementById("filter-energy").addEventListener("click", () => {
+        mostrarBebidas(bebidas.filter((b) => b.category === "Energizantes"));
+    });
+
+    document.getElementById("clear-filters").addEventListener("click", () => {
+        mostrarBebidas(bebidas);
+    });
+
+    bebidasContainer.addEventListener("click", (event) => {
+        if (event.target.classList.contains("add-to-cart")) {
+            const bebidaId = parseInt(event.target.dataset.id, 10);
+            const seleccionarBebida = bebidas.find((b) => b.id === bebidaId);
+            carrito.push(seleccionarBebida);
+            updateCart();
+            showSuccessMessage(`${seleccionarBebida.name} añadido al carrito!`);
+        }
+    });
+
+    document.getElementById("clear-cart").addEventListener("click", () => {
+        carrito = [];
         updateCart();
-        showSuccessMessage(`${seleccionarBebida.name} añadido al carrito!`);
-    }
-});
-
-document.getElementById("filter-beer").addEventListener("click", () => {
-    const filtered = bebidas.filter((b) => b.category === "Cerveza");
-    mostrarBebidas(filtered);
-});
-
-document.getElementById("filter-wine").addEventListener("click", () => {
-    const filtered = bebidas.filter((b) => b.category === "Vino");
-    mostrarBebidas(filtered);
-});
-
-document.getElementById("filter-aperitif").addEventListener("click", () => {
-    const filtered = bebidas.filter((b) => b.category === "Aperitivo");
-    mostrarBebidas(filtered);
-});
-
-document.getElementById("filter-soda").addEventListener("click", () => {
-    const filtered = bebidas.filter((b) => b.category === "Gaseosa");
-    mostrarBebidas(filtered);
-});
-
-document.getElementById("filter-energy").addEventListener("click", () => {
-    const filtered = bebidas.filter((b) => b.category === "Energizantes");
-    mostrarBebidas(filtered);
-});
-
-document.getElementById("clear-filters").addEventListener("click", () => {
-    mostrarBebidas(bebidas);
-});
-
-function guardarCarritoEnLocalStorage() {
-    localStorage.setItem("cart", JSON.stringify(carrito));
-}
-
-
-function loadCartFromLocalStorage() {
-    const guardarCarrito = localStorage.getItem("cart");
-    if (guardarCarrito) {
-        carrito = JSON.parse(guardarCarrito);
-        updateCart();
-    }
+        localStorage.removeItem("cart");
+    });
 }
 
 function updateCart() {
@@ -93,10 +83,8 @@ function updateCart() {
     });
 
     carritoTotalElement.textContent = total.toFixed(2);
-    guardarCarritoEnLocalStorage();
+    localStorage.setItem("cart", JSON.stringify(carrito));
 }
-
-loadCartFromLocalStorage();
 
 function showSuccessMessage(message) {
     const successMessage = document.createElement("div");
@@ -109,11 +97,17 @@ function showSuccessMessage(message) {
     }, 2000);
 }
 
-document.getElementById("clear-cart").addEventListener("click", () => {
-    carrito = [];
-    updateCart();
-    localStorage.removeItem("cart");
-});
+function loadCartFromLocalStorage() {
+    const guardarCarrito = localStorage.getItem("cart");
+    if (guardarCarrito) {
+        carrito = JSON.parse(guardarCarrito);
+        updateCart();
+    }
+}
+
+cargarBebidas();
+loadCartFromLocalStorage();
+
 
 
 
